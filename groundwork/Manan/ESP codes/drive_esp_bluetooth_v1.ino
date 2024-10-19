@@ -1,3 +1,4 @@
+
 #include <BluetoothSerial.h>
 #include <Cytron_SmartDriveDuo.h>
 
@@ -7,15 +8,24 @@
 
 BluetoothSerial SerialBT;
 
-// Motor control setup
+// Motor control setup for 6 wheels
 #define IN1 5
+#define IN2 18
+#define IN3 19
 #define BAUDRATE 115200
-Cytron_SmartDriveDuo smartDriveDuo30(SERIAL_SIMPLIFIED, IN1, BAUDRATE);
+
+Cytron_SmartDriveDuo smartDriveDuo30_1(SERIAL_SIMPLIFIED, IN1, BAUDRATE);
+Cytron_SmartDriveDuo smartDriveDuo30_2(SERIAL_SIMPLIFIED, IN2, BAUDRATE);
+Cytron_SmartDriveDuo smartDriveDuo30_3(SERIAL_SIMPLIFIED, IN3, BAUDRATE);
 
 // Movement and speed variables
 int speed = 30;
-float right_wheel = 0;
-float left_wheel = 0;
+float right_wheel_front = 0;
+float left_wheel_front = 0;
+float right_wheel_middle = 0;
+float left_wheel_middle = 0;
+float right_wheel_back = 0;
+float left_wheel_back = 0;
 
 // Command definitions
 #define FORWARD 'F'
@@ -49,23 +59,33 @@ void executeCommand(char command) {
 
   switch (command) {
     case FORWARD:
-      right_wheel = speed;
-      left_wheel = speed;
+      right_wheel_front = left_wheel_front = speed;
+      right_wheel_middle = left_wheel_middle = speed;
+      right_wheel_back = left_wheel_back = speed;
       Serial.println("F");
       break;
     case BACKWARD:
-      right_wheel = -speed;
-      left_wheel = -speed;
+      right_wheel_front = left_wheel_front = -speed;
+      right_wheel_middle = left_wheel_middle = -speed;
+      right_wheel_back = left_wheel_back = -speed;
       Serial.println("B");
       break;
     case LEFT:
-      right_wheel = -speed;
-      left_wheel = speed;
+      right_wheel_front = -speed*1.488;
+      right_wheel_middle = -speed;
+      right_wheel_back = -speed*1.33;
+      left_wheel_front = speed*1.488;
+      left_wheel_middle = speed;
+      left_wheel_back = speed*1.33;
       Serial.println("L");
       break;
     case RIGHT:
-      right_wheel = speed;
-      left_wheel = -speed;
+      right_wheel_front = speed*1.488;
+      right_wheel_middle = speed;
+      right_wheel_back = speed*1.33;
+      left_wheel_front = -speed*1.488;
+      left_wheel_middle = -speed;
+      left_wheel_back = -speed*1.33;
       Serial.println("R");
       break;
     case CIRCLE:
@@ -84,13 +104,16 @@ void executeCommand(char command) {
       // Perform action for starting a process or operation
       break;
     case PAUSE:
-      right_wheel = 0;
-      left_wheel = 0;
+      right_wheel_front = left_wheel_front = 0;
+      right_wheel_middle = left_wheel_middle = 0;
+      right_wheel_back = left_wheel_back = 0;
       break;
     default:
       Serial.println("Invalid command received!");
       break;
   }
 
-  smartDriveDuo30.control(right_wheel, left_wheel);
+  smartDriveDuo30_1.control(right_wheel_front, left_wheel_front);
+  smartDriveDuo30_2.control(right_wheel_middle, left_wheel_middle);
+  smartDriveDuo30_3.control(right_wheel_back, left_wheel_back);
 }
