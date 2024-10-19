@@ -1,0 +1,17 @@
+<launch>
+    <node name="joystick1" pkg="joy" type="joy_node">
+        <remap from="/joy" to="/joy0"/>
+        <param name="dev" type="string" value="/dev/input/by-id/usb-Thrustmaster_T.Flight_Hotas_One-joystick"/>
+        <param name="coalesce_interval" type="double" value="0.05"/>
+    </node>
+
+    <node name="joystick2" pkg="joy" type="joy_node">
+        <remap from="/joy" to="/joy1"/>
+        <param name="dev" type="string" value="/dev/input/by-id/usb-Sony_Interactive_Entertainment_Wireless_Controller-if03-joystick" />
+    </node>
+
+    <node name="teleop" pkg="IRC2025" type="teleop"/>
+    <node name="base_bevel_stepper_v2" pkg="IRC2025" type="base_bevel_stepper_v2.py" output="screen" />
+    <node name="cam_la_v2" pkg="IRC2025" type="cam_la_v2.py" output="screen"/>
+    <node name="cam_gimble" pkg="IRC2025" type="cam_gimble.py" output="screen"/>
+</launch>
