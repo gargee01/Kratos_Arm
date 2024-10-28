@@ -11,7 +11,6 @@
     </node>
 
     <node name="teleop" pkg="IRC2025" type="teleop"/>
-    <node name="base_bevel_stepper_v2" pkg="IRC2025" type="base_bevel_stepper_v2.py" output="screen" />
-    <node name="cam_la_v2" pkg="IRC2025" type="cam_la_v2.py" output="screen"/>
-    <node name="cam_gimble" pkg="IRC2025" type="cam_gimble.py" output="screen"/>
+    <node name="joy_control" pkg="IRC2025" type="arm_esp" output="screen" />
+    
 </launch>
