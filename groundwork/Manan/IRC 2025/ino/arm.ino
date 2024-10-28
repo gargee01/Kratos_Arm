@@ -33,27 +33,27 @@ ros::NodeHandle n;
 std_msgs::Int16MultiArray msg;
 ros::Publisher chatter("chatter", &msg);
 
-int vel1;
-int vel2;
+int vel1 = 0;
+int vel2 = 0;
 int var;
-int vel_la1=0;
-int vel_la2=0;
+int vel_la1 = 0;
+int vel_la2 = 0;
 int var_base;
 int var_bev;
-int vel_base=0;
-int vel_bev=0;
+int vel_base = 0;
+int vel_bev = 0;
 int var_gripper;
 
 void messageCallback(const std_msgs::Int16MultiArray& receivedMsg) {
   vel_la1 = receivedMsg.data[0];
-  if (abs(receivedMsg.data[0]) > 50) {
+  if (abs(receivedMsg.data[0]) > 25) {
     vel_la1 = receivedMsg.data[0];
   } else {
     vel_la1 = 0;
   }
 
   vel_la2 = receivedMsg.data[1];
-  if (abs(receivedMsg.data[1]) > 50) {
+  if (abs(receivedMsg.data[1]) > 25) {
     vel_la2 = receivedMsg.data[1];
   } else {
     vel_la2 = 0;
