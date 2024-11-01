@@ -33,35 +33,35 @@ ros::NodeHandle n;
 std_msgs::Int16MultiArray msg;
 ros::Publisher chatter("chatter", &msg);
 
-int vel1;
-int vel2;
+int vel1 = 0;
+int vel2 = 0;
 int var;
-int vel_la1;
-int vel_la2;
+int vel_la1 = 0;
+int vel_la2 = 0;
 int var_base;
 int var_bev;
-int vel_base;
-int vel_bev;
+int vel_base = 0;
+int vel_bev = 0;
 int var_gripper;
 
 void messageCallback(const std_msgs::Int16MultiArray& receivedMsg) {
   vel_la1 = receivedMsg.data[0];
-  if (abs(receivedMsg.data[0]) > 50) {
+  if (abs(receivedMsg.data[0]) > 25) {
     vel_la1 = receivedMsg.data[0];
   } else {
     vel_la1 = 0;
   }
 
   vel_la2 = receivedMsg.data[1];
-  if (abs(receivedMsg.data[1]) > 50) {
+  if (abs(receivedMsg.data[1]) > 25) {
     vel_la2 = receivedMsg.data[1];
   } else {
     vel_la2 = 0;
   }
 
   vel_base = receivedMsg.data[3];
-  if (receivedMsg.data[3] > 25 && receivedMsg.data[3] < 175) {
-    vel_base = receivedMsg.data[3];
+  if (receivedMsg.data[3] > 25 && receivedMsg.data[3] < 256) {
+    vel_base = receivedMsg.data[3]/3;
   } else {
     vel_base = 0;
   }
@@ -131,26 +131,26 @@ void messageCallback(const std_msgs::Int16MultiArray& receivedMsg) {
   if(receivedMsg.data[4] == 1){
     digitalWrite(bevel_right_drn, LOW);//gripper roll motion in one direction
     digitalWrite(bevel_left_drn, HIGH);
-    analogWrite(bevel_right_pwm, vel_bev);
-    analogWrite(bevel_left_pwm, vel_bev);
+    analogWrite(bevel_right_pwm, vel_bev/3);
+    analogWrite(bevel_left_pwm, vel_bev/3);
   }
   if(receivedMsg.data[4] == 2){
     digitalWrite(bevel_right_drn, HIGH);//gripper roll motion in another direction
     digitalWrite(bevel_left_drn, LOW);
-    analogWrite(bevel_right_pwm, vel_bev);
-    analogWrite(bevel_left_pwm, vel_bev);
+    analogWrite(bevel_right_pwm, vel_bev/3);
+    analogWrite(bevel_left_pwm, vel_bev/3);
   }
   if(receivedMsg.data[4] == 3){
     digitalWrite(bevel_right_drn, HIGH);//gripper pitch motion in one direction
     digitalWrite(bevel_left_drn, HIGH);
-    analogWrite(bevel_right_pwm, vel_bev);
-    analogWrite(bevel_left_pwm, vel_bev);
+    analogWrite(bevel_right_pwm, vel_bev/3);
+    analogWrite(bevel_left_pwm, vel_bev/3);
   }
   if(receivedMsg.data[4] == 4){
     digitalWrite(bevel_right_drn, LOW);//gripper pitch motion in another direction
     digitalWrite(bevel_left_drn, LOW);
-    analogWrite(bevel_right_pwm, vel_bev);  
-    analogWrite(bevel_left_pwm, vel_bev);
+    analogWrite(bevel_right_pwm, vel_bev/3);  
+    analogWrite(bevel_left_pwm, vel_bev/3);
   }
 
   if (receivedMsg.data[6] == 1) {
