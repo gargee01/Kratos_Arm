@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+
+import rospy
+from std_msgs.msg import Float32MultiArray
+
+def encoder_callback(msg):
+    """
+    Callback function to process received encoder data.
+    """
+    if len(msg.data) < 2:
+        rospy.logwarn("Received incomplete data!")
+        return
+
+    # Extract encoder angles
+    encoder1_angle = msg.data[0]
+    encoder2_angle = msg.data[1]
+
+    # Log the angles
+    rospy.loginfo(f"Encoder 1 Angle: {encoder1_angle:.2f} degrees")
+    rospy.loginfo(f"Encoder 2 Angle: {encoder2_angle:.2f} degrees")
+
+def listener():
+    """
+    Initializes the ROS node and subscribes to the topic.
+    """
+    rospy.init_node('encoder_listener', anonymous=True)  # Node name: encoder_listener
+    rospy.Subscriber("encoder_angles", Float32MultiArray, encoder_callback)
+    rospy.loginfo("Listening to encoder_angles topic...")
+    rospy.spin()  # Keep the node running
+
+if __name__ == '__main__':
+    try:
+        listener()
+    except rospy.ROSInterruptException:
+        rospy.loginfo("Encoder listener node terminated.")
