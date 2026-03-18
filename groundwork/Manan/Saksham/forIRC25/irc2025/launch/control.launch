@@ -1,0 +1,10 @@
+<launch>
+    <node name="wheel_control" pkg="irc2025" type="calibrate.py" output="screen">
+        <param name="wheel_number" value="2"/>
+        <param name="velocity" value="30"/>
+    </node>
+
+    <node name="sum" pkg="irc2025" type="servos_for_drive.py" output="screen" />
+    <node name="sum" pkg="irc2025" type="ld_servos.py" output="screen" />
+</launch>
+

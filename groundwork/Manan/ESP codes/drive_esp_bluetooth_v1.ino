@@ -9,8 +9,8 @@
 BluetoothSerial SerialBT;
 
 // Motor control setup for 6 wheels
-#define IN1 5
-#define IN2 18
+#define IN1 18
+#define IN2 5
 #define IN3 19
 #define BAUDRATE 115200
 
